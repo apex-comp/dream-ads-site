@@ -34,6 +34,8 @@
             color: var(--primary);
             line-height: 1.6;
             overflow-x: hidden;
+            /* Prevent text selection for added "protection" */
+            user-select: none; 
         }
 
         a {
@@ -49,6 +51,8 @@
         img {
             max-width: 100%;
             display: block;
+            /* Prevent dragging images to save them */
+            pointer-events: none; 
         }
 
         /* --- Components --- */
@@ -58,7 +62,6 @@
             padding: 0 20px;
         }
 
-        /* Nav Button Style */
         .btn-nav {
             padding: 10px 24px;
             background: var(--primary);
@@ -75,7 +78,6 @@
             transform: translateY(-2px);
         }
 
-        /* Main CTA Button Style */
         .btn-main {
             display: inline-block;
             padding: 16px 32px;
@@ -84,15 +86,14 @@
             font-weight: 700;
             border-radius: 50px;
             font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4); /* Orange shadow */
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4);
             margin-top: 30px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
-            width: 100%; /* Full width for form button */
+            width: 100%; 
         }
         
-        /* Specific override for hero button */
         header .btn-main {
             width: auto;
         }
@@ -134,7 +135,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
+            padding: 15px 40px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             position: fixed;
@@ -144,16 +145,12 @@
             box-shadow: 0 2px 20px rgba(0,0,0,0.05);
         }
 
-        .logo-text {
-            font-weight: 800;
-            font-size: 1.5rem;
-            color: var(--primary);
-            letter-spacing: -0.5px;
-            text-transform: uppercase;
-        }
-        
-        .logo-text span {
-            color: var(--secondary);
+        .nav-logo-img {
+            height: 50px; 
+            width: auto;
+            object-fit: contain;
+            cursor: pointer; /* Indicates it's clickable */
+            pointer-events: auto; /* Re-enable pointer events for the logo link */
         }
 
         .nav-links {
@@ -175,7 +172,8 @@
         /* --- Hero Section --- */
         .hero {
             height: 100vh;
-            background-image: url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1920&q=80');
+            /* Updated to use your specific background filename */
+            background-image: url('images/background.avif');
             background-size: cover;
             background-position: center;
             position: relative;
@@ -183,7 +181,7 @@
             align-items: center;
             text-align: center;
             color: white;
-            padding-top: 80px; /* Offset for navbar */
+            padding-top: 80px; 
         }
 
         .overlay {
@@ -340,7 +338,6 @@
             resize: vertical;
         }
         
-        /* Status Message Style */
         #form-status {
             text-align: center;
             margin-top: 15px;
@@ -358,15 +355,18 @@
             text-align: center;
         }
 
-        .footer-logo {
+        .footer-logo-container {
+            display: flex;
+            justify-content: center;
             margin-bottom: 20px;
-            font-size: 2rem;
-            font-weight: 800;
-            display: inline-block;
-            text-transform: uppercase;
         }
-        
-        .footer-logo span { color: var(--secondary); }
+
+        .footer-logo-img {
+            height: 40px;
+            width: auto;
+            filter: brightness(0) invert(1); 
+            pointer-events: none; /* Can't save logo */
+        }
 
         .footer-content p {
             color: #94a3b8;
@@ -404,6 +404,10 @@
                 padding: 15px 20px;
             }
 
+            .nav-logo-img {
+                height: 35px;
+            }
+
             .nav-links {
                 display: none; 
             }
@@ -430,11 +434,14 @@
         }
     </style>
 </head>
-<body>
+<body id="top">
 
     <nav class="navbar">
         <div class="logo-container">
-            <div class="logo-text">Dream <span>Ads</span></div>
+            <!-- LOGO: Clicking it smooth scrolls to top -->
+            <a href="#top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">
+                <img src="images/logo.png" alt="Dream Ads Logo" class="nav-logo-img">
+            </a>
         </div>
         <div class="nav-links">
             <a href="#services">Services</a>
@@ -442,9 +449,6 @@
             <a href="#contact" class="btn-nav">Contact Us</a>
         </div>
     </nav>
-
-    <!-- Empty ID for scrolling to top -->
-    <div id="top"></div>
 
     <header class="hero">
         <div class="overlay"></div>
@@ -461,7 +465,8 @@
             <div class="grid">
                 <div class="card">
                     <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=500&q=80" alt="Web Design">
+                        <!-- Filename from screenshot -->
+                        <img src="images/webdesign.avif" alt="Web Design">
                     </div>
                     <div class="card-content">
                         <h3>Web Design</h3>
@@ -470,7 +475,8 @@
                 </div>
                 <div class="card">
                     <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=500&q=80" alt="Digital Marketing">
+                        <!-- Filename from screenshot -->
+                        <img src="images/digitalmarketing.avif" alt="Digital Marketing">
                     </div>
                     <div class="card-content">
                         <h3>Digital Marketing</h3>
@@ -479,7 +485,8 @@
                 </div>
                 <div class="card">
                     <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=500&q=80" alt="Branding">
+                         <!-- Filename from screenshot -->
+                        <img src="images/brandidentity.avif" alt="Branding">
                     </div>
                     <div class="card-content">
                         <h3>Brand Identity</h3>
@@ -504,7 +511,8 @@
                 <a href="#contact" style="color: var(--secondary); font-weight: 700; text-decoration: underline;">Start your project today &rarr;</a>
             </div>
             <div class="about-image">
-                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Our Team">
+                 <!-- Filename from screenshot -->
+                <img src="images/whoweare.avif" alt="Our Team">
             </div>
         </div>
     </section>
@@ -517,7 +525,6 @@
             </p>
             
             <div class="contact-container">
-                <!-- Added ID for JS targeting -->
                 <form id="contact-form" action="https://formspree.io/f/maqjwjzj" method="POST">
                     <div class="form-group">
                         <label for="name">Name</label>
@@ -548,7 +555,6 @@
                         <button type="submit" class="btn-main">Send Message</button>
                     </div>
 
-                    <!-- Hidden Status Message -->
                     <div id="form-status"></div>
                 </form>
             </div>
@@ -558,7 +564,9 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">Dream <span>Ads</span></div>
+                <div class="footer-logo-container">
+                    <img src="images/logo.png" alt="Dream Ads" class="footer-logo-img">
+                </div>
                 <p>Ishwarpur, Maharashtra, India</p>
                 <a href="mailto:contact@dreamads.digital">contact@dreamads.digital</a>
             </div>
@@ -568,16 +576,16 @@
         </div>
     </footer>
 
-    <!-- Script to handle form submission without redirecting to Formspree page -->
+    <!-- Form Script & Security Script -->
     <script>
+        // Form Handling
         document.getElementById('contact-form').addEventListener('submit', async function(e) {
-            e.preventDefault(); // Stop normal redirect
+            e.preventDefault(); 
             const form = e.target;
             const status = document.getElementById('form-status');
             const data = new FormData(form);
             const submitBtn = form.querySelector('button[type="submit"]');
 
-            // Visual feedback while sending
             submitBtn.textContent = 'Sending...';
             submitBtn.disabled = true;
             
@@ -589,34 +597,30 @@
                 });
                 
                 if (response.ok) {
-                    // SUCCESS
                     status.style.display = 'block';
-                    status.style.backgroundColor = '#d1fae5'; // light green bg
-                    status.style.color = '#059669'; // green text
+                    status.style.backgroundColor = '#d1fae5'; 
+                    status.style.color = '#059669'; 
                     status.innerHTML = "Thanks! Your message has been sent successfully. Redirecting home...";
                     
-                    form.reset(); // Clear form inputs
+                    form.reset(); 
                     submitBtn.textContent = 'Sent!';
                     
-                    // Wait 3 seconds, then scroll to top
                     setTimeout(() => {
                         status.style.display = 'none';
                         submitBtn.textContent = 'Send Message';
                         submitBtn.disabled = false;
-                        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to home
+                        window.scrollTo({ top: 0, behavior: 'smooth' }); 
                     }, 3000);
 
                 } else {
-                    // ERROR from Formspree
                     status.style.display = 'block';
-                    status.style.backgroundColor = '#fee2e2'; // light red bg
-                    status.style.color = '#dc2626'; // red text
+                    status.style.backgroundColor = '#fee2e2'; 
+                    status.style.color = '#dc2626'; 
                     status.innerHTML = "Oops! There was a problem sending your form. Please try again.";
                     submitBtn.textContent = 'Send Message';
                     submitBtn.disabled = false;
                 }
             } catch (error) {
-                // NETWORK ERROR
                 status.style.display = 'block';
                 status.style.backgroundColor = '#fee2e2';
                 status.style.color = '#dc2626';
@@ -624,6 +628,16 @@
                 submitBtn.textContent = 'Send Message';
                 submitBtn.disabled = false;
             }
+        });
+
+        // --- DISABLE RIGHT CLICK SCRIPT ---
+        document.addEventListener('contextmenu', event => {
+            event.preventDefault();
+        });
+        
+        // --- DISABLE DRAGGING IMAGES ---
+        document.querySelectorAll('img').forEach(img => {
+            img.setAttribute('draggable', false);
         });
     </script>
 

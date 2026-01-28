@@ -8,7 +8,6 @@
     <style>
         /* --- CSS Reset & Variables --- */
         :root {
-            /* REPLACED: Updated with your requested colors */
             --primary: #0A192F; /* Primary Blue */
             --secondary: #FF6B00; /* Accent Orange */
             --gradient: linear-gradient(45deg, #FF6B00, #FF3D00); /* Orange Gradient */
@@ -32,7 +31,7 @@
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--light);
-            color: var(--primary); /* Updated text color to match theme */
+            color: var(--primary);
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -90,6 +89,12 @@
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
+            width: 100%; /* Full width for form button */
+        }
+        
+        /* Specific override for hero button */
+        header .btn-main {
+            width: auto;
         }
 
         .btn-main:hover {
@@ -187,7 +192,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* Updated overlay to match primary blue */
             background: rgba(10, 25, 47, 0.9); 
         }
 
@@ -295,7 +299,7 @@
             box-shadow: var(--shadow);
         }
 
-        /* --- Contact Form Section (New) --- */
+        /* --- Contact Form Section --- */
         .contact-container {
             max-width: 700px;
             margin: 0 auto;
@@ -335,10 +339,20 @@
         textarea.form-control {
             resize: vertical;
         }
+        
+        /* Status Message Style */
+        #form-status {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 700;
+            display: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
 
         /* --- Footer --- */
         footer {
-            background: var(--primary); /* Dark Blue */
+            background: var(--primary);
             color: white;
             padding: 80px 0 40px;
             text-align: center;
@@ -429,12 +443,14 @@
         </div>
     </nav>
 
+    <!-- Empty ID for scrolling to top -->
+    <div id="top"></div>
+
     <header class="hero">
         <div class="overlay"></div>
         <div class="container hero-content">
             <h1>Turn Your <span class="gradient-text">Dream</span> Into Digital Reality.</h1>
             <p>Premium Web Design & Performance Marketing for modern businesses.</p>
-            <!-- Points to contact section with form -->
             <a href="#contact" class="btn-main">Get a Free Quote</a>
         </div>
     </header>
@@ -493,7 +509,6 @@
         </div>
     </section>
 
-    <!-- Updated Contact Section with Formspree Form -->
     <section id="contact" class="section" style="background: #f1f5f9;">
         <div class="container">
             <h2 class="section-title">Let's Talk</h2>
@@ -502,7 +517,8 @@
             </p>
             
             <div class="contact-container">
-                <form action="https://formspree.io/f/maqjwjzj" method="POST">
+                <!-- Added ID for JS targeting -->
+                <form id="contact-form" action="https://formspree.io/f/maqjwjzj" method="POST">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" class="form-control" placeholder="Your Name" required>
@@ -529,8 +545,11 @@
                     </div>
                     
                     <div style="text-align: center;">
-                        <button type="submit" class="btn-main" style="width: 100%;">Send Message</button>
+                        <button type="submit" class="btn-main">Send Message</button>
                     </div>
+
+                    <!-- Hidden Status Message -->
+                    <div id="form-status"></div>
                 </form>
             </div>
         </div>
@@ -548,6 +567,65 @@
             </div>
         </div>
     </footer>
+
+    <!-- Script to handle form submission without redirecting to Formspree page -->
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Stop normal redirect
+            const form = e.target;
+            const status = document.getElementById('form-status');
+            const data = new FormData(form);
+            const submitBtn = form.querySelector('button[type="submit"]');
+
+            // Visual feedback while sending
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    // SUCCESS
+                    status.style.display = 'block';
+                    status.style.backgroundColor = '#d1fae5'; // light green bg
+                    status.style.color = '#059669'; // green text
+                    status.innerHTML = "Thanks! Your message has been sent successfully. Redirecting home...";
+                    
+                    form.reset(); // Clear form inputs
+                    submitBtn.textContent = 'Sent!';
+                    
+                    // Wait 3 seconds, then scroll to top
+                    setTimeout(() => {
+                        status.style.display = 'none';
+                        submitBtn.textContent = 'Send Message';
+                        submitBtn.disabled = false;
+                        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to home
+                    }, 3000);
+
+                } else {
+                    // ERROR from Formspree
+                    status.style.display = 'block';
+                    status.style.backgroundColor = '#fee2e2'; // light red bg
+                    status.style.color = '#dc2626'; // red text
+                    status.innerHTML = "Oops! There was a problem sending your form. Please try again.";
+                    submitBtn.textContent = 'Send Message';
+                    submitBtn.disabled = false;
+                }
+            } catch (error) {
+                // NETWORK ERROR
+                status.style.display = 'block';
+                status.style.backgroundColor = '#fee2e2';
+                status.style.color = '#dc2626';
+                status.innerHTML = "Oops! There was a network error. Please check your connection.";
+                submitBtn.textContent = 'Send Message';
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
 
 </body>
 </html>
